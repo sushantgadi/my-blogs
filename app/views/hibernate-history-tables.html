@@ -1,0 +1,64 @@
+<div class="row marketing">
+    <h4><b>Hibernate History Tables</b></h4>
+    <p>
+        <b><i>You may face requirement to maintain history of changes in the transaction tables. You can leverage the ready made hibernate soution to do so. It will maintain separate set of tables which will keep tract of all the changes in the transaction tables.</i></b>
+    </p>
+    <p>
+        Below are the steps to include maven build profiles in your project :
+    </p>
+    <pre>
+    <xmp>
+       <dependency>
+       <groupId>org.hibernate</groupId>
+       <artifactId>hibernate-envers</artifactId>
+       <version>4.1.9.Final</version>
+       </dependency>
+    </xmp>
+</pre>
+    <br>
+    <p>
+       Below are the hibernate properties need to be used :
+    </p>
+    <pre>
+    <xmp>
+        org.hibernate.envers.audit_table_suffix=_HIS  -- provide suffix as per your choice
+        hibernate.auditable=true
+        hibernate.hbm2ddl.auto=update
+    </xmp>
+</pre>
+  <br>
+    <p>
+        The entities for which the history need to be maintained should be marked a @Audited annotation :
+    </p>
+    <pre>
+    <xmp>
+        @Audited
+        @Entity
+        @Table(name = "USER_REGISTRATION")
+        public class UserRegistrationEntity implements Serializable
+        {
+
+        @Id
+        @GeneratedValue( strategy = GenerationType.AUTO )
+        @Column( name = "ID" )
+        private Long id;
+
+        @Column( name= "FIRST_NAME")
+        private String firstName;
+
+        @Column( name= "LAST_NAME")
+        private String lastName;
+
+        @Column( name= "EMAIL_ID")
+        private String emailId;
+        ...
+        }
+    </xmp>
+   </pre> 
+     <p>
+     It will automatically create history table with name <b>USER_REGISTRATION_HIS</b> when you run the project.   
+     After performing any transaction you will be able to see entry in the table USER_REGISTRATION_HIS for the changed line item.
+    </p>
+    <br>
+    <p>Read Next Blog - <a ng-href="#!/cross-cutting-audit-logging" ng-click="srollup()">Cross Cutting Audit Logging</a></p>
+</div>

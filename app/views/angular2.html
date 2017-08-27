@@ -1,0 +1,406 @@
+<div class="row marketing">
+     <img class="img-responsive" src="./images/angular2_kick_start.png"></img>
+    <p>
+        <b><i>Most of the enterprise applications today requires audit logging. It is the logging feature in the application which records the action taken by the user on the critical transactions in the application. It can be achieved using variety of implementation. I am sharing you an elegant solution to do it in a cross cuttong way in your application using Spring Aspect Oriented Programming(AOP) and Spring data JPA.</i></b>
+    </p>
+    <p>
+        Below are the steps to include maven build profiles in your project :
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td class="gutter">
+                    <div class="">1</div>
+                    <div class="">2</div>
+                    <div class="">3</div>
+                    <div class="">4</div>
+                    <div class="">5</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <div class=""><code class="">&lt;!--</code><code class="">Audit logging dependency</code><code class="">--&gt;</code></div>
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;cglib&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;cglib&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;2.2&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="gutter">
+                    <div class="">7</div>
+                    <div class="">8</div>
+                    <div class="">9</div>
+                    <div class="">10</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;org.aspectj&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;aspectjweaver&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;1.6.11&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="gutter">
+                    <div class="">11</div>
+                    <div class="">12</div>
+                    <div class="">13</div>
+                    <div class="">14</div>
+                    <div class="">15</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <div class=""><code class="">&lt;!--</code><code class="">Spring data jpa dependency</code><code class="">--&gt;</code></div>
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;org.springframework.data&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;spring-data-jpa&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;1.6.0.RELEASE&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>
+       Spring configuration is below :
+   </p>
+   <pre>
+    <xmp>
+     <!--Async configuration -->
+     <task:annotation-driven/>
+
+     <!--Task executer for Async configuration-->
+     <task:executor id="threadPoolTaskExecutor" pool-size="10" />
+
+     <!-- AOP configuration-->
+     <aop:aspectj-autoproxy />
+
+     <!-- Spring component scan-->
+     <context:component-scan base-package="com.elegant">
+     <context:include-filter type="aspectj"
+     expression="com.elegant.audit.AuditingAspect" />
+
+     </context:component-scan>
+
+     <!-- spring data jpa configuration for Auditing -->
+     <jpa:repositories base-package="com.elegant.audit"
+     entity-manager-factory-ref="myEmf" 
+     transaction-manager-ref="transactionManager" />
+
+</xmp>
+</pre>
+
+<br>
+<p>
+ Create an annotation named as ElegantAuditable for auditing :
+</p>
+<pre>
+    <xmp>
+package com.elegant.audit;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * @author sushant.Gadi
+ *
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD, ElementType.TYPE })
+public @interface ElegantAuditable {
+    AuditingActionType actionType();
+
+    String serviceId();
+}
+   </xmp>
+</pre>
+
+<br>
+<p>
+ Create an auditing aspect class as shown below :
+</p>
+<pre>
+    <xmp>
+     
+package com.elegant.audit;
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * @author sushant.Gadi
+ *
+ */
+@Aspect
+@Component
+public class AuditingAspect {
+
+    static final Logger logger = Logger.getLogger(AuditingAspect.class);
+
+    @Autowired(required = true)
+    private HttpServletRequest request;
+
+    @Autowired
+    ElegantAuditableRepository elegantAuditableRepository;
+
+    @After("@annotation(auditable)")
+    @Transactional
+    public void logTheAuditActivity(JoinPoint aPoint, ElegantAuditable auditable) {
+        logger.debug("Elegant Auditing started for Service Id :" + auditable.serviceId());
+
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        logger.info("Parms in Elegant auditing = User Name: " + getUserName() + ", Service Id :" + auditable.serviceId()
+                + ", Action : " + auditable.actionType().toString() + ", Ip address :" + ipAddress);
+        String arguments = getArgs(aPoint.getArgs());
+        logger.debug("Elegant Auditing arguments=" + arguments);
+        elegantAuditableRepository.save(new ElegantAuditableModel(getUserName(), auditable.serviceId(),
+                auditable.actionType().toString(), ipAddress, arguments, new Timestamp(new Date().getTime())));
+        logger.debug("Elegant Auditing finished for Service Id :" + auditable.serviceId());
+    }
+
+    private String getArgs(Object[] args) {
+        String arguments = "";
+        int argCount = 0;
+
+        for (Object object : args) {
+            if (argCount > 0) {
+                arguments += ", ";
+            }
+            arguments += "arg[" + ++argCount + "]=" + "[" + object + "]";
+        }
+        return arguments;
+    }
+
+    private String getUserName() {
+        try {
+            return SecurityContextHolder.getContext().getAuthentication().getName();
+        } catch (NullPointerException npe) {
+            return "Unknown User";
+        }
+    }
+
+}
+   </xmp>
+</pre>
+
+<br>
+<p>
+ Create a JPA auditing model class for persiting the auditing data:
+</p>
+<pre>
+    <xmp>
+package com.elegant.audit;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ * @author sushant.Gadi
+ *
+ */
+@Entity
+@Table(name = "ELEGANT_AUDITABLE")
+public class ElegantAuditableModel implements Serializable {
+
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "ElegantAuditableSeqGenerator")
+    @SequenceGenerator(name = "ElegantAuditableSeqGenerator", allocationSize = 1)
+    private Long id;
+
+    @Column(name = "USERNAME")
+    private String username;
+
+    @Column(name = "SERVICE_ID")
+    private String serviceId;
+
+    @Column(name = "ACTION")
+    private String action;
+
+    @Column(name = "USER_IP")
+    private String userIP;
+
+    @Column(name = "ARGUMENTS")
+    private String arguments;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "DATE")
+    private Date date;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getUserIP() {
+        return userIP;
+    }
+
+    public void setUserIP(String userIP) {
+        this.userIP = userIP;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getArguments() {
+        return arguments;
+    }
+
+    public void setArguments(String arguments) {
+        this.arguments = arguments;
+    }
+
+    public ElegantAuditableModel(String username, String serviceId, String action, String userIP, String arguments,
+            Date date) {
+        super();
+        this.username = username;
+        this.serviceId = serviceId;
+        this.action = action;
+        this.userIP = userIP;
+        this.arguments = arguments;
+        this.date = date;
+    }
+
+}
+
+   </xmp>
+</pre>
+
+<br>
+<p>
+ Spring JPA repository for auditing the data :
+</p>
+<pre>
+    <xmp>
+package com.Elegant.audit;
+
+import org.springframework.data.repository.CrudRepository;
+
+/**
+ * @author sushant.Gadi
+ *
+ */
+public interface ElegantAuditableRepository extends CrudRepository<ElegantAuditableModel, Long> {
+
+}
+
+   </xmp>
+</pre>
+
+<br>
+<p>
+ Enum for the type of auditing :
+</p>
+<pre>
+    <xmp>
+package com.elegant.audit;
+
+/**
+ * @author sushant.Gadi
+ *
+ */
+public enum AuditingActionType {
+    CREATE, UPDATE, DELETE, READ
+}
+   </xmp>
+</pre>
+
+<br>
+<p>
+MySQL script for creating Elegant_Auditable table :
+</p>
+<pre>
+    <xmp>
+CREATE TABLE `ELEGANT_AUDITABLE` (
+   `ID` int(11) NOT NULL AUTO_INCREMENT,
+   `USERNAME` varchar(100) DEFAULT NULL,
+   `SERVICE_ID` varchar(150) DEFAULT NULL,
+   `ACTION` varchar(150) DEFAULT NULL,
+   `USER_IP` varchar(50) DEFAULT NULL,
+   `ARGUMENTS` text,
+   `DATE` timestamp NULL DEFAULT NULL,
+   PRIMARY KEY (`ID`)
+ ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1
+   </xmp>
+</pre>
+
+<p>
+<br>
+Thats is all required to create ElegantAuditable annotation for audit logging. It can be used on any service method as shown below:
+</p>
+<pre>@ElegantAuditable(actionType = AuditingActionType.READ,serviceId="testServiceId")</pre>
+
+<br>
+<!-- <p>Read Next Blog - <a ng-href="#!/cross-cutting-audit-logging" ng-click="srollup()">Cross Cutting Audit Logging</a></p> -->
+</div>

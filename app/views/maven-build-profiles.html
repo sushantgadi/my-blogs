@@ -1,0 +1,87 @@
+<div class="row marketing">
+    <h4><b>Maven Build Profiles</b></h4>
+    <p>
+        <b><i>Building the same artifact for different environments has always been an annoyance. You have multiple environments, for instance test and production servers or, maybe a set of servers that run the same application with different configurations.Profiles are specified in pom.xml file using its profiles elements and are triggered
+        during the building process of the artifact.</i></b>
+    </p>
+    <p>
+        Below are the steps to include maven build profiles in your project :
+        <br>
+        <br> Add the profiles element in your pom.xml. You can create as many profiles you want eg: dev,uat,stagging,prod. I am including only dev and prod for the sake of simplicity.
+    </p>
+    <pre>
+    <xmp>
+        <!-- configuration for build profiles -->
+    <profiles>
+        <!-- The configuration of the development profile -->
+        <profile>
+            <id>dev</id>
+            <!-- The development profile is active by default -->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.id>dev</build.profile.id>
+            </properties>
+        </profile>
+        <!-- The configuration of the production profile -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+        </profile>
+    </profiles>
+
+        <!-- add this filters tag in the <build> tag  -->
+        <filters>
+            <!-- Ensures that the config.properties file is always loaded from the 
+                configuration directory of the active Maven profile. -->
+            <filter>src/main/resources/profiles/${build.profile.id}/config.properties</filter>
+        </filters>
+    </xmp>
+</pre>
+    <br>
+    <p>
+        The config.properties for dev and prod contains the required properties. For example the properties for jdbc in datsource.properties :
+    </p>
+    <pre>
+    <xmp>
+        #----JDBC properties for database start----#
+        jdbc.url = jdbc:mysql://localhost:3306/swagger?autoReconnect=true
+        jdbc.username = root
+        jdbc.password = root
+   
+    </xmp>
+</pre>
+  <br>
+    <p>
+        The original datasource.properties will be as follows :
+    </p>
+    <pre>
+    <xmp>
+        #----JDBC properties for database start----#
+        jdbc.url = ${jdbc.url}
+        jdbc.username = ${jdbc.username}
+        jdbc.password = ${jdbc.password} 
+    </xmp>
+   </pre> 
+     <p>
+     To create build for dev type command : <i>mvn clean install or mvn clean install -Pdev</i>
+
+     <br>To create build for prod type command :<i> mvn clean install -Pprod</i>
+    </p>
+    <p>
+     Below is the screenshot for the directory structure:
+     <img class="img-responsive" src="./images/build-profile.png"></img>
+    </p>
+
+    <br>
+    <p>
+        Refer to my Git repository for the complete code
+        <br>
+        <a href="https://github.com/sushantgadi/build-profiles" target="_blank">https://github.com/sushantgadi/build-profiles</a>
+    </p>
+    <br>
+    <p>Read Next Blog - <a ng-href="#!/rest-template-proxy" ng-click="srollup()">Rest Template Proxy</a></p>
+</div>

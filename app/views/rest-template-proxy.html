@@ -1,0 +1,66 @@
+<div class="row marketing">
+    <h4><b>Spring RestTemplate Behind Corporate Proxy</b></h4>
+    <p>
+        <b><i>We may face a requirement to access third party rest API's in our spring application. We can achieve it using RestTemplate class. The principle for RestTemplate design is same as other Spring Template classes such as JdbcTemplate, it performs the complex task with a simplified approach with default behaviour.</i></b>
+    </p>
+    <p>
+        Below is the example of sample rest call in spring using RestTemplate :
+        <br>
+        <br>
+    </p>
+    <pre>
+    <xmp>
+        private static void getEmployees()
+        {
+         final String uri = "http://localhost:8080/testAPI";
+         RestTemplate restTemplate = new RestTemplate();
+         String response = restTemplate.getForObject(uri, String.class);
+         System.out.println(response);
+        }
+    </xmp>
+</pre>
+    <br>
+    <p>
+        The problems come when you access third party API inside company premises. Your company’s network is behind corporate firewall. You can create proxy enabled RestTemplate to achieve it. Below is the code:
+    </p>
+    <pre>
+    <xmp>
+      @Component
+      public final class RestProxyTemplate {
+
+      final Logger logger = Logger.getLogger(RestProxyTemplate.class);
+
+      @Autowired
+      RestTemplate restTemplate;
+
+      @Value("${rest.proxy.host}")
+      String host;
+
+      @Value("${rest.proxy.port}")
+      String port;
+
+      @PostConstruct
+      public void init() {
+        int portNr = -1;
+        try {
+            portNr = Integer.parseInt(port);
+        } catch (NumberFormatException e) {
+            logger.error("port parsing error");
+        }
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        InetSocketAddress address = new InetSocketAddress(host, portNr);
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
+        factory.setProxy(proxy);
+
+        restTemplate.setRequestFactory(factory);
+       }
+
+        public RestTemplate getRestTemplate() {
+        return restTemplate;
+       }
+      }
+    </xmp>
+</pre>
+<br>
+     <p>Read Next Blog - <a ng-href="#!/hibernate-history-tables" ng-click="srollup()">Hibernate History Tables</a></p> 
+</div>

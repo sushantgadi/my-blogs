@@ -1,0 +1,167 @@
+<div class="row marketing">
+    <h4><b>Rest API Documentation Using Swagger</b></h4>
+    <p>
+        <b><i>Swagger is a powerful open source framework backed by a large ecosystem of tools that helps you design, build, document, and consume your RESTful APIs.</i></b>
+    </p>
+    <p>
+        Below are the integration steps in your maven project.
+    </p>
+    <p>
+        Add the following dependencies in your maven project :
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td class="gutter">
+                    <div class="">1</div>
+                    <div class="">2</div>
+                    <div class="">3</div>
+                    <div class="">4</div>
+                    <div class="">5</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <div class=""><code class="">&lt;!--</code><code class="">dependency for swagger 2</code><code class="">--&gt;</code></div>
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;io.springfox&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;springfox-swagger2&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;2.4.0&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="gutter">
+                    <div class="">6</div>
+                    <div class="">7</div>
+                    <div class="">8</div>
+                    <div class="">9</div>
+                    <div class="">10</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <br>
+                        <div class=""><code class="">&lt;!--</code><code class="">dependency for swagger UI</code><code class="">--&gt;</code></div>
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;io.springfox&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;springfox-swagger-ui&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;2.4.0&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="gutter">
+                    <div class="">11</div>
+                    <div class="">12</div>
+                    <div class="">13</div>
+                    <div class="">14</div>
+                    <div class="">15</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <br>
+                        <div class=""><code class="">&lt;!--</code><code class="">dependency for fasterxml classmate</code><code class="">--&gt;</code></div>
+                        <div class=""><code class="">&lt;</code><code class="">dependency</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">groupId</code><code class="">&gt;com.fasterxml&lt;/</code><code class="">groupId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">artifactId</code><code class="">&gt;classmate&lt;/</code><code class="">artifactId</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="">&lt;</code><code class="">version</code><code class="">&gt;1.2.0&lt;/</code><code class="">version</code><code class="">&gt;</code></div>
+                        <div class=""><code class="">&lt;/</code><code class="">dependency</code><code class="">&gt;</code></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>
+        Create swagger configuration file as shown below :
+    </p>
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+            <tr>
+                <td class="gutter">
+                    <div class="line number1 index0 alt2">1</div>
+                    <div class="line number2 index1 alt1">2</div>
+                    <div class="line number3 index2 alt2">3</div>
+                    <div class="line number4 index3 alt1">4</div>
+                    <div class="line number5 index4 alt2">5</div>
+                    <div class="line number6 index5 alt1">6</div>
+                    <div class="line number7 index6 alt2">7</div>
+                    <div class="line number8 index7 alt1">8</div>
+                    <div class="line number9 index8 alt2">9</div>
+                    <div class="line number10 index9 alt1">10</div>
+                    <div class="line number11 index10 alt2">11</div>
+                    <div class="line number12 index11 alt1">12</div>
+                </td>
+                <td class="code">
+                    <div class="container">
+                        <div class="line number1 index0 alt2"><code class="java color1">@Configuration</code></div>
+                        <div class="line number2 index1 alt1"><code class="java color1">@EnableSwagger2</code></div>
+                        <div class="line number3 index2 alt2"><code class="java keyword">public</code> <code class="java keyword">class</code> <code class="java plain">SwaggerConfig {&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div>
+                        <div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java color1">@Bean</code></div>
+                        <div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java plain">Docket api() { </code></div>
+                        <div class="line number6 index5 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">return</code> <code class="java keyword">new</code> <code class="java plain">Docket(DocumentationType.SWAGGER_2)&nbsp; </code></div>
+                        <div class="line number7 index6 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">.select()&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div>
+                        <div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">.apis(RequestHandlerSelectors.any())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div>
+                        <div class="line number9 index8 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">.paths(PathSelectors.any())&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div>
+                        <div class="line number10 index9 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">.build();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </code></div>
+                        <div class="line number11 index10 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div>
+                        <div class="line number12 index11 alt1"><code class="java plain">}</code></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <p>Access the following URL of your app : <i>http://localhost:8080/app_name/swagger.html</i>
+    </p>
+    <p>
+        API documenttaion will be dispayed as shown below :
+    </p>
+    <img class="img-responsive" src="./images/swagger.png"></img>
+    <br>
+    <p>APIs can be documented as shown below :</p>
+    <pre>
+     <xmp>
+@RestController
+@Api(value = "User Rest Controller")
+@RequestMapping(value = "/rest/user")
+public class UserController {
+
+    @ApiOperation(value = "Get all users", notes = "Returns all users")
+    @RequestMapping(value = "/all", method = RequestMethod.GET, produces = 
+    MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<User>> userAll() {
+        User u1 = new User("Sushant Kumar Gadi", "sushantgadi@gmail.com", 
+
+        "+919953338815", "Gurgaon");
+        User u2 = new User("User2", "user@gmail.com", "+919953338816", "Lucknow");
+
+        List<User> userList = new ArrayList<>();
+        userList.add(u1);
+        userList.add(u2);
+
+        return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Create new user", notes = "Create new user")
+    @RequestMapping(value = "/", method = RequestMethod.POST, produces = 
+    MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> save(@Valid @RequestBody User user) {
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+
+}
+</xmp>
+</pre>
+<br>
+<p>
+    You can refer the complete code for spring with swagger integration from my git repository :
+<br>
+<a href="https://github.com/sushantgadi/swagger" target="_blank">https://github.com/sushantgadi/swagger</a>
+</p>
+
+<br>
+<p>Read Next Blog - <a ng-href="#!/maven-build-profiles" ng-click="srollup()">Maven Build Profiles</a></p>
+
+</div>
