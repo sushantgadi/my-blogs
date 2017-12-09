@@ -2,11 +2,20 @@
   <html>
   <head>
     <!-- <base href="/#"> -->
-    <meta charset="utf-8">
+    <meta charset="iso-8859-1">
     <title>Sushant's Programming Secrets</title>
     <link rel="icon" href="./images/site-icon.ico" />
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <!--fb meta tags-->
+     <meta property="og:url"           content="http://www.sushantgadi.in" />
+     <meta property="og:type"          content="website" />
+     <meta property="og:title"         content="Sushant's Programming Secrets" />
+     <meta property="og:description"   content="These blogs are my effort to put together best of my learning so far." />
+     <meta property="og:image"         content="http://www.sushantgadi.in/images/do-live-life.png" />
+
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -15,16 +24,26 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+    <!--Google adds-->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6615526942924698",
+    enable_page_level_ads: true
+  });
+</script>
+
   </head>
   <body ng-app="sushantkumargadiApp">
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+   <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+   var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
       <!--[if lte IE 8]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -49,11 +68,13 @@
               <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
                 <ul class="nav navbar-nav">
-                  <li class="active"><a ng-href="#!/">Home</a></li>
+                  <li class="active"><a ng-href="#!/home">Home</a></li>
                   <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogs <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a ng-href="#!/angular2">Kick Start Angular 2.0</a></li>
+                      <!-- <li><a ng-href="#!/angular2">Kick Start Angular 2.0</a></li> -->
+                      <li><a ng-href="#!/restful-services-using-node-mongo-express">RESTful Services Using NodeJS, Mongodb & Express Server</a></li>
+                      <li><a ng-href="#!/spring-cloud">Spring Cloud</a></li>
                       <li><a ng-href="#!/swagger">Swagger Rest API Documentation</a></li>
                       <li><a ng-href="#!/maven-build-profiles">Maven Build Profiles</a></li>
                       <li><a ng-href="#!/rest-template-proxy">Spring RestTemplate Behind Proxy</a></li>
@@ -73,7 +94,8 @@
 
 <div class="container" ng-controller="MainCtrl">
   <!-- <div fb-like class="pull-right"></div> -->
-  <div class="fb-like" data-href="http://sushantgadi.in" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+  <!-- <div class="fb-like" data-href="http://sushantgadi.in" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> -->
+  <div class="fb-like" data-href="https://www.facebook.com/sushantgadi.in/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
   <div google-plus class="pull-right"></div>
   <div ng-view=""></div>
 </div>
@@ -115,6 +137,7 @@ ga('send', 'pageview');
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/spring-cloud.js"></script>
 <script src="scripts/controllers/angular2.js"></script>
 <script src="scripts/controllers/swagger.js"></script>
 <script src="scripts/controllers/maven-build-profiles.js"></script>

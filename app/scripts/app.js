@@ -27,6 +27,16 @@ angular
         controller: 'HomeCtrl',
         controllerAs: 'home'
       })
+      .when('/restful-services-using-node-mongo-express', {
+        templateUrl: 'views/restful-services-using-node-mongo-express.html',
+        controller: 'RestfulServicesUsingNodeMongoExpressCtrl',
+        controllerAs: 'restfulServicesUsingNodeMongoExpressCtrl'
+      })
+       .when('/spring-cloud', {
+        templateUrl: 'views/spring-cloud.html',
+        controller: 'SpringCloudCtrl',
+        controllerAs: 'springCloud'
+      })
     .when('/angular2', {
         templateUrl: 'views/angular2.html',
         controller: 'Angular2Ctrl',

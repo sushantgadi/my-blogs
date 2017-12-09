@@ -1,4 +1,7 @@
 <div class="row marketing">
+ Share this blog : 
+    <div class="fb-share-button" data-href="http://sushantgadi.in/#!/cross-cutting-audit-logging" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fsushantgadi.in%2F%23%21%2Fcross-cutting-audit-logging&amp;src=sdkpreparse">Share</a></div>
+
     <h4><b>Cross Cutting Audit Logging - @ElegantAuditable
         </b></h4>
     <p>
@@ -352,7 +355,7 @@ import org.springframework.data.repository.CrudRepository;
  * @author sushant.Gadi
  *
  */
-public interface ElegantAuditableRepository extends CrudRepository<ElegantAuditableModel, Long> {
+public interface ElegantAuditableRepository extends CrudRepository  &lt;ElegantAuditableModel, Long &gt; {
 
 }
 
@@ -404,4 +407,5 @@ Thats is all required to create ElegantAuditable annotation for audit logging. I
 
 <br>
 <!-- <p>Read Next Blog - <a ng-href="#!/cross-cutting-audit-logging" ng-click="srollup()">Cross Cutting Audit Logging</a></p> -->
+<div class="fb-comments" data-href="http://sushantgadi.in/#!/cross-cutting-audit-logging" data-numposts="5"></div>
 </div>

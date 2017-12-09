@@ -1,0 +1,143 @@
+<div class="row marketing">
+    Share this blog : 
+    <div class="fb-share-button" data-href="http://www.sushantgadi.in/#!/spring-cloud" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.sushantgadi.in%2F%23%21%2Fspring-cloud&amp;src=sdkpreparse">Share</a></div>
+
+    <h4><b>RESTful Web Services Using Nodejs, Mongodb and Express Server
+    </b></h4>
+    <br/>    
+    <p>
+        <i>In this blog I will explain how RESTful web services can be created using NodeJS.</i>
+    </p>
+    <br/>
+    <h5>
+        <b>
+            What are Microservices and why it’s the defacto standard for application development today? 
+        </b>    
+    </h5>
+    <p>
+        Microservices - also known as the microservice architecture - is an architectural style that structures an application as a collection of loosely coupled services, which implement business capabilities. The microservice architecture enables the continuous delivery/deployment of large, complex applications. It also enables an organization to evolve its technology stack.
+
+    </p>
+    <p>
+     It’s a distinctive method of developing software systems that has grown in popularity in recent years.  In fact, even though there isn’t a whole lot out there on what it is and how to do it, for many developers it has become a preferred way of creating enterprise applications.  Thanks to its scalability, this architectural method is considered particularly ideal when you have to enable support for a range of platforms and devices—spanning web, mobile, Internet of Things, and wearables—or simply when you’re not sure what kind of devices you’ll need to support in an increasingly cloudy future.  
+ </p>
+ <br/>
+ <h5>
+    <b>
+        What is Spring Cloud?
+    </b>    
+</h5>
+<p>
+ Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state). Coordination of distributed systems leads to boiler plate patterns, and using Spring Cloud developers can quickly stand up services and applications that implement those patterns. They will work well in any distributed environment, including the developer's own laptop, bare metal data centers, and managed platforms such as Cloud Foundry.
+</p>  
+<p>
+   Let’s see the basic components of Spring Cloud for creating a distributed system.    
+</p>
+<img class="img-responsive" src="./images/spring-cloud1.png"></img>
+
+<br/>   
+<p>
+   Below is the discription of the components shown in the diagram above :    
+</p>
+<p>
+   <b>1- Zuul Gateway Service :</b> Netflix Zuul is the front door for all requests. As an edge service application, Zuul is built to enable dynamic routing, monitoring, resiliency and security. It is the entry point where the additional logic can be applied to services such as adding a custom request header, authentication and so on.
+</p>
+<br/>
+<p>
+   <b>2- Eureka Discovery Server :</b> Netflix Eureka Discovery Server is a phone book for the microservices. Each service registers itself with the service registry and tells the registry where it lives (host, port, node name) and perhaps other service-specific metadata - things that other services can use to make informed decisions about it.  
+</p>
+<br/>
+<p>
+   <b>3- Config Server :</b> Spring Cloud Config Server is a central config server where all configurable parameters of micro-services are written version controlled. The benefit of a central config server is that if we change a property for a microservice, it can reflect that on the fly without redeploying the microservice.
+</p>
+<br/>
+<p>
+   <b>4- Hystrics Circuit Breaker :</b> If we design our systems on microservice based architecture, we will generally develop many Microservices and those will interact with each other heavily in achieving certain business goals. Now, all of us can assume that this will give expected result if all the services are up and running and response time of each service is satisfactory.
+   <br/><br/>
+   Now what will happen if any service, of the current Eco system, has some issue and stopped servicing the requests. It will result in timeouts/exception and the whole Eco system will get unstable due to this single point of failure.
+   <br/><br/>
+   Here circuit breaker pattern comes handy and it redirects traffic to a fall back path once it sees any such scenario. Also it monitors the defective service closely and restore the traffic once the service came back to normalcy.
+
+   So circuit breaker is a kind of a wrapper of the method which is doing the service call and it monitors the service health and once it gets some issue, the circuit breaker trips and all further calls goto the circuit breaker fall back and finally restores automatically once the service comes back.
+   <br/><br/>
+
+   Consider the below diagram for explaination.
+   <img class="img-responsive" src="./images/spring-cloud7.png"></img>
+
+   <i>Suppose in the diagram above the "Service A" calls the "Service B", but in order to server the request the "Service B" needs to call "Service C". Due to some reason "Service C" start failing. Though there is a timeout setting in "Service B" to call "Service C", but the "Service B" resources will be completely consumed since lot of requests start accumulating on "Service B". This will fail "Service B" as well.</i>
+   <br/><br/>
+   This is where the circuit breaker comes into the picture. It will avoid the propogation of failure from "Service C" to "Service C", Since the request circuit from "Service B" to "Service A" will break. We will see the detailed implementation in the demo.
+
+
+</p>
+<br/>
+<p>
+   <b>5- Ribbon Load Balancer :</b> Ribbon plays a critical role in supporting inter-process communication in the cloud. The library includes the Netflix client side load balancers and clients for middle tier services.
+
+   Ribbon provides the following features:
+   
+   <ul>
+    <li>Multiple and pluggable load balancing rules</li>
+    <li> Integration with service discovery</li>
+    <li>Built-in failure resiliency</li>
+    <li>Cloud enabled</li>
+    <li>Clients integrated with load balancers</li>
+    <li> Archaius configuration driven client factory</li>
+</ul>
+
+There are three sub projects:
+<br/>
+<ul>
+    <li><b>ribbon-core:</b> includes load balancer and client interface definitions, common load balancer implementations, integration of client with load balancers and client factory.
+    </li>
+    <li>
+        <b>ribbon-eureka:</b> includes load balancer implementations based on Eureka client, which is the library for service registration and discovery.
+    </li>
+    <li>
+        <b>ribbon-httpclient:</b> includes the JSR-311 based implementation of REST client integrated with load balancers.
+    </li>
+</ul>
+</p>
+<br/>
+<p>
+   <b>6- Hystrics Dashboard :</b>  The Netflix Hystrix Dashboard allows to monitor Hystrix metrics in real time.
+   When Netflix began to use this dashboard, their operations improved by reducing the time needed to discover and recover from operational events. The duration of most production incidents (already less frequent due to Hystrix) became far shorter, with diminished impact, due to the real-time insights into system behavior provided by the Hystrix Dashboard.
+   <img class="img-responsive" src="./images/spring-cloud2.png"></img>
+   <br/>
+   When a "circuit" is failing it changes colors (on a gradient from green through yellow, orange, and red) like this :
+   <img class="img-responsive" src="./images/spring-cloud3.png"></img>
+   <br/>
+   The diagram below shows one circuit from the dashboard along with explanations of what all of the data represents.
+   Hystrix packs a lot of information into the dashboard so that engineers can quickly consume and correlate data.
+   <img class="img-responsive" src="./images/spring-cloud4.png"></img>
+</p>
+<br/>
+<p>
+   <b>7- Turbine :</b> The Hystrix Dashboard allows to monitor a single server or a cluster of servers aggregated using Turbine, with low latency (typically around 1 or 2 seconds when aggregating a cluster, subsecond with a single server).
+   <img class="img-responsive" src="./images/spring-cloud5.png"></img>
+   <br/>
+   Here is another example from the Netflix API dashboard monitoring 476 servers aggregated using Turbine:
+   <img class="img-responsive" src="./images/spring-cloud6.png"></img>
+
+</p>
+
+<br/><br/>
+<p>
+   Now since we have the required info. of the components in Spring Cloud, let's see how it works using the illustrative diagram with steps below.
+   
+   <img class="img-responsive" src="./images/spring-cloud8.png"></img>
+   <img class="img-responsive" src="./images/spring-cloud9.png"></img>
+   <img class="img-responsive" src="./images/spring-cloud10.png"></img>
+</p>
+
+<br/><br/>
+<p>
+   
+   For demo of the application with complete explanantion, visit my github repo : 
+   <br/><br/>
+   <b><a href="https://github.com/sushantgadi/spring-cloud" target="_blank">https://github.com/sushantgadi/spring-cloud</a>
+   </b>
+</p>
+<p>Read Next Blog - <a ng-href="#!/swagger" ng-click="srollup()">Rest API Documentation Using Swagger</a></p>
+<div class="fb-comments" data-href="http://sushantgadi.in/#!/spring-cloud" data-numposts="5"></div>
+</div>

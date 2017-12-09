@@ -1,4 +1,6 @@
 <div class="row marketing">
+    Share this blog : 
+    <div class="fb-share-button" data-href="http://www.sushantgadi.in/#!/swagger" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.sushantgadi.in%2F%23%21%2Fswagger&amp;src=sdkpreparse">Share</a></div>
     <h4><b>Rest API Documentation Using Swagger</b></h4>
     <p>
         <b><i>Swagger is a powerful open source framework backed by a large ecosystem of tools that helps you design, build, document, and consume your RESTful APIs.</i></b>
@@ -131,17 +133,17 @@ public class UserController {
     @ApiOperation(value = "Get all users", notes = "Returns all users")
     @RequestMapping(value = "/all", method = RequestMethod.GET, produces = 
     MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> userAll() {
+    public ResponseEntity   &lt;List&lt;User&gt;&gt; userAll() {
         User u1 = new User("Sushant Kumar Gadi", "sushantgadi@gmail.com", 
 
         "+919953338815", "Gurgaon");
         User u2 = new User("User2", "user@gmail.com", "+919953338816", "Lucknow");
 
-        List<User> userList = new ArrayList<>();
+        List&lt;User&gt; userList = new ArrayList&lt;&gt;();
         userList.add(u1);
         userList.add(u2);
 
-        return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+        return new ResponseEntity&lt;List&lt;User&gt;&gt;(userList, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create new user", notes = "Create new user")
@@ -163,5 +165,5 @@ public class UserController {
 
 <br>
 <p>Read Next Blog - <a ng-href="#!/maven-build-profiles" ng-click="srollup()">Maven Build Profiles</a></p>
-
+<div class="fb-comments" data-href="http://sushantgadi.in/#!/swagger" data-numposts="5"></div>
 </div>
