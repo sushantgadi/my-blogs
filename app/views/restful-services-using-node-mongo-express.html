@@ -1,143 +1,646 @@
 <div class="row marketing">
-    Share this blog : 
-    <div class="fb-share-button" data-href="http://www.sushantgadi.in/#!/spring-cloud" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.sushantgadi.in%2F%23%21%2Fspring-cloud&amp;src=sdkpreparse">Share</a></div>
+  Share this blog :
+  <div class="fb-share-button" data-href="http://www.sushantgadi.in/#!/restful-services-using-node-mongo-express" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.sushantgadi.in%2F%23%21%2Frestful-services-using-node-mongo-express&amp;src=sdkpreparse">Share</a></div>
 
-    <h4><b>RESTful Web Services Using Nodejs, Mongodb and Express Server
-    </b></h4>
-    <br/>    
-    <p>
-        <i>In this blog I will explain how RESTful web services can be created using NodeJS.</i>
-    </p>
+  <h4>
+    <b>RESTful Web Services Using Nodejs, Mongodb and Express Server
+    </b>
+  </h4>
+  <br/>
+  <p>
+    <i>In this blog I will explain how RESTful web services can be created using Node.js. We will run the application using
+      express server, the data persistance will be done using MongoDB.</i>
+  </p>
+  <br/>
+  <h5>
+    <b>
+      What is Node.js?
+    </b>
+  </h5>
+  <p>
+    Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model
+    that makes it lightweight and efficient. Node.js package ecosystem, npm, is the largest ecosystem of open source libraries
+    in the world.
+
+  </p>
+  <p>
+    It is an open-source, cross-platform JavaScript run-time environment for executing JavaScript code server-side. Historically,
+    JavaScript was used primarily for client-side scripting, in which scripts written in JavaScript are embedded in a webpage's
+    HTML, to be run client-side by a JavaScript engine in the user's web browser. Node.js enables JavaScript to be used for
+    server-side scripting, and runs scripts server-side to produce dynamic web page content before the page is sent to the
+    user's web browser. Consequently, Node.js has become one of the foundational elements of the "JavaScript everywhere"
+    paradigm, allowing web application development to unify around a single programming language, rather than rely on a different
+    language for writing server side scripts.
+  </p>
+  <br/>
+  <h4>
+    <b>
+      Use cases for selection between Java and Node.js?
+    </b>
+  </h4>
+  <br/>
+  <p>
+    <b>When to use Node.js?</b>
+  </p>
+  <p>
+    <ul>
+      <li>
+        <b>Node.js offers speed and a nonblocking I/O API</b> : Node.js was created because concurrency is difficult in many
+        server-side programming languages, and often leads to poor performance. Node.js provides an event-driven architecture
+        and a nonblocking I/O API that optimizes an application's throughput and scalability. Developers write simple code
+        and Node.js takes over. Node.js uses an event loop, instead of processes or threads, to scale. Callbacks are defined,
+        and the server automatically enters the event loop at the end of the callback definition. Node.js exits the event
+        loop when there are no further callbacks to be performed.
+      </li>
+      <br/>
+      <li>
+        <b>Node.js is ready for enterprise deployment</b> : Node.js appeals to a wide range of the tech community because it
+        has a reputation for scaling well, being secure, and being easy to learn. It’s not hard for a developer to pick up
+        JavaScript and quickly become productive with it. There are many well-known organizations using Node.js in production,
+        including PayPal, LinkedIn, Netflix, and the New York Times.
+      </li>
+      <br/>
+      <li>
+        <b>Web Socket Server </b> : The non-blocking architecture of node makes it the best suited solution for socket server
+        applications or broadcasting like applications. Chat servers can become more efficient and real time using Node.js
+        as their base.
+      </li>
+      <br/>
+      <li>
+        <b>Fast file upload client </b> : With node you can upload multiple files at a time. That means it is possible that
+        a part of file1 and another part of file2 is in the server at a given point of time. This approach makes file uploading
+        dramatically fast.
+      </li>
+      <br/>
+      <li>
+        <b>Data streaming </b> : As node deals with callback concept, it can easily be used for streaming data flow. It can
+        be really useful for Travel industry where they fetch results from different APIs of different suppliers.
+      </li>
+      <br/>
+      <li>
+        <b>Website/Data APIs</b> : Node.js is a very good choice for this with default support with JSON, templating and very
+        lightweight process and you can use JS in backend and frontend both.
+      </li>
+      <br/>
+      <li>
+        <b>Simple worker queue/crons</b> : Node.js is easier for this type of processes like lambada functions or queue for
+        emails or notifications.
+      </li>
+      <br/>
+      <li>
+        <b>Real-Time Apps</b> : Node js is a good choice when you have a high volume of short messages with low latency. Like
+        live chat, data streaming, gaming apps, documents based apps like trello, Docs.
+      </li>
+      <br/>
+      <li>
+        <b>Speed of development</b> : Node.js helps to develop quickly when compared with Java.
+      </li>
+    </ul>
+
+  </p>
+  <br/>
+  <p>
+    <b>When to use Java?</b>
+  </p>
+  <p>
+    <ul>
+      <li>
+        <b>Web Services (security concerned) </b> : Java has better support for security frameworks.
+      </li>
+      <br/>
+      <li>
+        <b>CPU-Heavy jobs</b> : Java is the choice then for such type of applications (Big data, scientific analytics).
+      </li>
+      <br/>
+      <li>
+        <b>Relational Databases </b> : Working on relational databases is like a Breeze in Java.
+      </li>
+    </ul>
+
+  </p>
+  <br/>
+  <h5>
+    <b>
+      What is REST?
+    </b>
+  </h5>
+  <p>
+    REST is acronym for REpresentational State Transfer. It is architectural style for distributed hypermedia systems ans was
+    first presented by Roy Fielding in 2000 in his famous dissertation. Like any other architectural style, REST also does
+    have it’s own 6 guiding constraints which must be satisfied if an interface needs to be referred as RESTful. Guiding
+    Principles of REST are listed below.
+
+  </p>
+  <p>
+    <ol>
+      <li>
+        <strong>Client–server</strong> – By separating the user interface concerns from the data storage concerns, we improve the
+        portability of the user interface across multiple platforms and improve scalability by simplifying the server components.</li>
+      <li>
+        <strong>Stateless</strong> – Each request from client to server must contain all of the information necessary to understand
+        the request, and cannot take advantage of any stored context on the server. Session state is therefore kept entirely
+        on the client.</li>
+      <li>
+        <strong>Cacheable</strong> – Cache constraints require that the data within a response to a request be implicitly or explicitly
+        labeled as cacheable or non-cacheable. If a response is cacheable, then a client cache is given the right to reuse
+        that response data for later, equivalent requests.</li>
+      <li>
+        <strong>Uniform interface</strong> – By applying the software engineering principle of generality to the component interface,
+        the overall system architecture is simplified and the visibility of interactions is improved. In order to obtain
+        a uniform interface, multiple architectural constraints are needed to guide the behavior of components. REST is defined
+        by four interface constraints: identification of resources; manipulation of resources through representations; self-descriptive
+        messages; and, hypermedia as the engine of application state.</li>
+      <li>
+        <strong>Layered system</strong> – The layered system style allows an architecture to be composed of hierarchical layers by
+        constraining component behavior such that each component cannot “see” beyond the immediate layer with which they
+        are interacting.</li>
+      <li>
+        <strong>Code on demand (optional)</strong> – REST allows client functionality to be extended by downloading and executing
+        code in the form of applets or scripts. This simplifies clients by reducing the number of features required to be
+        pre-implemented.
+      </li>
+    </ol>
+  </p>
+
+  <br/>
+  <h5>
+    <b>
+      What is Express?
+    </b>
+  </h5>
+  <p>
+    Express.js, or simply Express, is a web application framework for Node.js, released as free and open-source software under
+    the MIT License. It is designed for building web applications and APIs. It is in fact the standard server framework for
+    Node.js.
+  </p>
+  <p>
+
     <br/>
     <h5>
-        <b>
-            What are Microservices and why it’s the defacto standard for application development today? 
-        </b>    
+      <b>
+        What is MongoDB?
+      </b>
     </h5>
     <p>
-        Microservices - also known as the microservice architecture - is an architectural style that structures an application as a collection of loosely coupled services, which implement business capabilities. The microservice architecture enables the continuous delivery/deployment of large, complex applications. It also enables an organization to evolve its technology stack.
-
+      MongoDB is a free and open-source cross-platform document-oriented database program. Classified as a NoSQL database program,
+      MongoDB uses JSON-like documents with schemas.
     </p>
     <p>
-     It’s a distinctive method of developing software systems that has grown in popularity in recent years.  In fact, even though there isn’t a whole lot out there on what it is and how to do it, for many developers it has become a preferred way of creating enterprise applications.  Thanks to its scalability, this architectural method is considered particularly ideal when you have to enable support for a range of platforms and devices—spanning web, mobile, Internet of Things, and wearables—or simply when you’re not sure what kind of devices you’ll need to support in an increasingly cloudy future.  
- </p>
- <br/>
- <h5>
-    <b>
-        What is Spring Cloud?
-    </b>    
-</h5>
-<p>
- Spring Cloud provides tools for developers to quickly build some of the common patterns in distributed systems (e.g. configuration management, service discovery, circuit breakers, intelligent routing, micro-proxy, control bus, one-time tokens, global locks, leadership election, distributed sessions, cluster state). Coordination of distributed systems leads to boiler plate patterns, and using Spring Cloud developers can quickly stand up services and applications that implement those patterns. They will work well in any distributed environment, including the developer's own laptop, bare metal data centers, and managed platforms such as Cloud Foundry.
-</p>  
-<p>
-   Let’s see the basic components of Spring Cloud for creating a distributed system.    
-</p>
-<img class="img-responsive" src="./images/spring-cloud1.png"></img>
+      <br/>
+      <b>Now we have the background Let’s start with creating RESTful web services. </b>
+      <p>
+        <b>Install Node.js :</b> Install using -
+        <a href="https://nodejs.org" target="_blank">https://nodejs.org</a>
+      </p>
+      <br/>
 
-<br/>   
-<p>
-   Below is the discription of the components shown in the diagram above :    
-</p>
-<p>
-   <b>1- Zuul Gateway Service :</b> Netflix Zuul is the front door for all requests. As an edge service application, Zuul is built to enable dynamic routing, monitoring, resiliency and security. It is the entry point where the additional logic can be applied to services such as adding a custom request header, authentication and so on.
-</p>
-<br/>
-<p>
-   <b>2- Eureka Discovery Server :</b> Netflix Eureka Discovery Server is a phone book for the microservices. Each service registers itself with the service registry and tells the registry where it lives (host, port, node name) and perhaps other service-specific metadata - things that other services can use to make informed decisions about it.  
-</p>
-<br/>
-<p>
-   <b>3- Config Server :</b> Spring Cloud Config Server is a central config server where all configurable parameters of micro-services are written version controlled. The benefit of a central config server is that if we change a property for a microservice, it can reflect that on the fly without redeploying the microservice.
-</p>
-<br/>
-<p>
-   <b>4- Hystrics Circuit Breaker :</b> If we design our systems on microservice based architecture, we will generally develop many Microservices and those will interact with each other heavily in achieving certain business goals. Now, all of us can assume that this will give expected result if all the services are up and running and response time of each service is satisfactory.
-   <br/><br/>
-   Now what will happen if any service, of the current Eco system, has some issue and stopped servicing the requests. It will result in timeouts/exception and the whole Eco system will get unstable due to this single point of failure.
-   <br/><br/>
-   Here circuit breaker pattern comes handy and it redirects traffic to a fall back path once it sees any such scenario. Also it monitors the defective service closely and restore the traffic once the service came back to normalcy.
+      <p>
+        <br/>
+        <b>Use "npm init" to initialize the project </b>
+      </p>
+      <p>
+        <img class="img-responsive" src="./images/mean_npm_init.png"></img>
+      </p>
+      <p>
+        <br/>
+        <b>It will create a file package.json for you, with the information you have used during the "npm init" execution.</b>
+      </p>
+      <p>
+        <img class="img-responsive" src="./images/mean_default_package_json.png"></img>
+      </p>
 
-   So circuit breaker is a kind of a wrapper of the method which is doing the service call and it monitors the service health and once it gets some issue, the circuit breaker trips and all further calls goto the circuit breaker fall back and finally restores automatically once the service comes back.
-   <br/><br/>
+      <p>
+        <br/>
+        <b>For the sake of simplicity, I am using the package.json with the required dependecies.</b>
+      </p>
 
-   Consider the below diagram for explaination.
-   <img class="img-responsive" src="./images/spring-cloud7.png"></img>
+      <pre>
+        <xmp>
+          {
+            "name": "employee-api",
+            "version": "1.0.0",
+            "description": "resfult web services of employee using mongoDb,express,node",
+            "main": "index.js",
+            "scripts": {
+              "test": "echo \"Error: no test specified\" && exit 1"
+            },
+            "author": "Sushant",
+            "license": "ISC",
+            "dependencies": {
+              "body-parser": "^1.18.2",
+              "express": "^4.16.2",
+              "gulp": "^3.9.1",
+              "gulp-mocha": "^4.3.1",
+              "gulp-nodemon": "^2.2.1",
+              "mongoose": "^4.13.6",
+              "should": "^13.1.3",
+              "sinon": "^4.1.2"
+            },
+            "devDependencies": {
+              "gulp-env": "^0.4.0",
+              "supertest": "^3.0.0"
+            }
+          }
+          
+   </xmp>
+   </pre>
+      <p>
+        <br/>
+        <b>Below is the explaination of "package.json" file we are using.</b>
+      </p>
+      <p>
+        <img class="img-responsive" src="./images/mean_package_json_explained.png"></img>
+      </p>
 
-   <i>Suppose in the diagram above the "Service A" calls the "Service B", but in order to server the request the "Service B" needs to call "Service C". Due to some reason "Service C" start failing. Though there is a timeout setting in "Service B" to call "Service C", but the "Service B" resources will be completely consumed since lot of requests start accumulating on "Service B". This will fail "Service B" as well.</i>
-   <br/><br/>
-   This is where the circuit breaker comes into the picture. It will avoid the propogation of failure from "Service C" to "Service C", Since the request circuit from "Service B" to "Service A" will break. We will see the detailed implementation in the demo.
+      <p>
+        <br/>
+        <b>
+          Run the command "npm install" in the root directory to install the dependencies defined in the package.json file. It will
+          create a folder “node_modules” in the root folder.
+        </b>
+      </p>
+
+      <p>
+        <br/>
+        <b>
+          Create a file gulpfile.js in the root directory. This file will configure the gulp in the app. The configuration for server
+          port is specified here. Gulp “default task” and “test” is defined here. The folder that needs to be ignored is
+          specified here.
+        </b>
+      </p>
+
+      <pre>
+        <xmp>
+          var gulp = require('gulp'),
+          nodemon = require('gulp-nodemon'),
+          gulp_mocha = require('gulp-mocha'),
+          env = require('gulp-env'),
+          supertest = require('supertest');
+      
+      gulp.task('default', function () {
+          nodemon({
+              script: 'app.js',
+              ext: 'js',
+              env: {
+                  PORT: 8000
+              },
+              igonore: ['./node_modules/**']
+          })
+              .on('restart', function () {
+                  console.log('Restarting...');
+              });
+      });
+      
+      gulp.task('test', function () {
+          env({ vars: { ENV: 'Test' } });
+          gulp.src('tests/*.js', { read: false })
+              .pipe(gulp_mocha({ reporter: 'nyan' }));
+      });
+          
+   </xmp>
+   </pre>
 
 
-</p>
-<br/>
-<p>
-   <b>5- Ribbon Load Balancer :</b> Ribbon plays a critical role in supporting inter-process communication in the cloud. The library includes the Netflix client side load balancers and clients for middle tier services.
 
-   Ribbon provides the following features:
-   
-   <ul>
-    <li>Multiple and pluggable load balancing rules</li>
-    <li> Integration with service discovery</li>
-    <li>Built-in failure resiliency</li>
-    <li>Cloud enabled</li>
-    <li>Clients integrated with load balancers</li>
-    <li> Archaius configuration driven client factory</li>
-</ul>
+      <p>
+        <br/>
+        <b>
+          Create a file app.js. This file is specified in the gulpfile.js. The app.js is the main file for the application.
+        </b>
+      </p>
 
-There are three sub projects:
-<br/>
-<ul>
-    <li><b>ribbon-core:</b> includes load balancer and client interface definitions, common load balancer implementations, integration of client with load balancers and client factory.
-    </li>
-    <li>
-        <b>ribbon-eureka:</b> includes load balancer implementations based on Eureka client, which is the library for service registration and discovery.
-    </li>
-    <li>
-        <b>ribbon-httpclient:</b> includes the JSR-311 based implementation of REST client integrated with load balancers.
-    </li>
-</ul>
-</p>
-<br/>
-<p>
-   <b>6- Hystrics Dashboard :</b>  The Netflix Hystrix Dashboard allows to monitor Hystrix metrics in real time.
-   When Netflix began to use this dashboard, their operations improved by reducing the time needed to discover and recover from operational events. The duration of most production incidents (already less frequent due to Hystrix) became far shorter, with diminished impact, due to the real-time insights into system behavior provided by the Hystrix Dashboard.
-   <img class="img-responsive" src="./images/spring-cloud2.png"></img>
-   <br/>
-   When a "circuit" is failing it changes colors (on a gradient from green through yellow, orange, and red) like this :
-   <img class="img-responsive" src="./images/spring-cloud3.png"></img>
-   <br/>
-   The diagram below shows one circuit from the dashboard along with explanations of what all of the data represents.
-   Hystrix packs a lot of information into the dashboard so that engineers can quickly consume and correlate data.
-   <img class="img-responsive" src="./images/spring-cloud4.png"></img>
-</p>
-<br/>
-<p>
-   <b>7- Turbine :</b> The Hystrix Dashboard allows to monitor a single server or a cluster of servers aggregated using Turbine, with low latency (typically around 1 or 2 seconds when aggregating a cluster, subsecond with a single server).
-   <img class="img-responsive" src="./images/spring-cloud5.png"></img>
-   <br/>
-   Here is another example from the Netflix API dashboard monitoring 476 servers aggregated using Turbine:
-   <img class="img-responsive" src="./images/spring-cloud6.png"></img>
+      <pre>
+    <xmp>
+  var express = require('express'),
+  mongoose = require('mongoose'),
+  body_parser = require('body-parser');
+  
+  //new instance of express server
+  var app = express();
+  
+  //application port, will pick up port in the process.evt else will be 3000 by default
+  var port = process.env.port || 3000;
+  
+  //databse connection with mongoDB(Will create the database if it does not exist)
+  var db;
+  
+  if (process.env.ENV === 'Test')
+      db = mongoose.connect('mongodb://localhost/emp-api-test');
+  
+  else
+      db = mongoose.connect('mongodb://localhost/emp-api');
+  
+  //Employee model import
+  var Emp = require('./models/emp-model')
+  
+  // parse application/json
+  app.use(body_parser.json());
+  
+  // parse application/x-www-form-urlencoded
+  app.use(body_parser.urlencoded({ extended: false }));
+  
+  //emp router
+  var empRouter = require('./routes/emp-routes')(Emp, app);
+  
+  //emp API's default url
+  app.use('/api/emp', empRouter);
+  
+  app.get('/', function (req, res) {
+      res.send('My APIs are running on PORT:' + port);
+  });
+  
+  //default log when the gulp starts
+  app.listen(port, function () {
+      console.log('Gulp is running the app on PORT:' + port);
+  });
+    </xmp>
+       </pre>
 
-</p>
 
-<br/><br/>
-<p>
-   Now since we have the required info. of the components in Spring Cloud, let's see how it works using the illustrative diagram with steps below.
-   
-   <img class="img-responsive" src="./images/spring-cloud8.png"></img>
-   <img class="img-responsive" src="./images/spring-cloud9.png"></img>
-   <img class="img-responsive" src="./images/spring-cloud10.png"></img>
-</p>
+      <p>
+        <br/>
+        <b>
+          Create a file emp_model in the folder models/ in the root directory. This is the model class for persistance in the emp_model
+          class.
+        </b>
+      </p>
 
-<br/><br/>
-<p>
-   
-   For demo of the application with complete explanantion, visit my github repo : 
-   <br/><br/>
-   <b><a href="https://github.com/sushantgadi/spring-cloud" target="_blank">https://github.com/sushantgadi/spring-cloud</a>
-   </b>
-</p>
-<p>Read Next Blog - <a ng-href="#!/swagger" ng-click="srollup()">Rest API Documentation Using Swagger</a></p>
-<div class="fb-comments" data-href="http://sushantgadi.in/#!/spring-cloud" data-numposts="5"></div>
+      <pre>
+    <xmp>
+      var mongoose = require('mongoose');
+      
+      //employee model definition
+      var emp_model = mongoose.Schema({
+          emp_name: {
+              type: String
+          },
+          department: {
+              type: String
+          },
+          salary: {
+              type: Number
+          },
+          is_active: {
+              type: Boolean, default: true
+          }
+      });
+      
+      //exporting the emp_model, so that it can be used
+      module.exports = mongoose.model('Emp', emp_model);
+    </xmp>
+       </pre>
+
+
+      <p>
+        <br/>
+        <b>
+          Create a file emp-controller.js in the /controllers folder. Here all the API's for Employee CRUD operation is defined.
+        </b>
+      </p>
+
+      <pre>
+      <xmp>
+  
+        var emp_controller = function (Emp) {
+          
+              var post = function (req, res) {
+          
+                  console.log("/employees post API request body:")
+                  console.log(req.body);
+          
+                  //create new instance of Employee model using request body 
+                  var emp = new Emp(req.body);
+          
+                  if (!req.body.emp_name) {
+                      res.status(400);
+                      res.send('Emp Name is required');
+                  }
+                  else {
+                      emp.save();
+          
+                      console.log("--------------------------------------------------")
+                      console.log("/employees post API response body:")
+                      console.log(emp);
+          
+                      res.status(201);
+                      res.send(emp);
+                  }
+              };
+          
+              var get = function (req, res) {
+          
+                  //query parameters in the api
+                  var query = {};
+          
+                  console.log('/employees get API Request query:');
+                  console.log(req.query);
+          
+                  //check if the emp_name filter is present in the request parameters
+                  if (req.query.emp_name) {
+                      query.emp_name = req.query.emp_name;
+                  }
+          
+                  Emp.find(query, function (err, employess) {
+                      if (err)
+                          res.status(500).send(err);
+                      else
+                          res.json(employess);
+                  });
+              };
+          
+              return {
+                  post: post,
+                  get: get
+              }
+          
+          }
+          
+          module.exports = emp_controller;
+    </xmp>
+       </pre>
+
+      <p>
+        <br/>
+        <b>
+          Create a file emp-routes.js file in the folder /routes in the foot folder. Here all URI's for the API's is defined.
+        </b>
+      </p>
+
+      <pre>
+    <xmp>
+      var express = require('express');
+      
+      var routes = function (Emp) {
+      
+          //for defining different routes
+          var empRouter = express.Router();
+      
+          //emp controller
+          var emp_controller = require('../controllers/emp-controller')(Emp);
+      
+          //post:API for creating new employee, get:API for all employees with filtering option
+          empRouter.route('/employees')
+      
+              .post(emp_controller.post)
+      
+              .get(emp_controller.get)
+      
+          //middleware to search by Id
+          empRouter.use('/employees/:emp_id', function (req, res, next) {
+              console.log('in middleware request params:');
+              console.log(req.params);
+      
+              Emp.findById(req.params.emp_id, function (err, employee) {
+                  if (err)
+                      res.status(500).send(err);
+                  else if (employee) {
+                      req.employee = employee;
+                      next();
+                  }
+                  else {
+                      res.status(404).send('no employee found');
+                  }
+              });
+          });
+      
+          //API to get employee by Id
+          empRouter.route('/employees/:emp_id')
+              .get(function (req, res) {
+                  console.log('/employees/:emp_id get API request params:');
+                  console.log(req.params);
+      
+                  res.json(req.employee);
+      
+              })
+              .put(function (req, res) {
+                  console.log('/employees/:emp_id put API request params:');
+                  console.log(req.params);
+      
+                  req.employee.emp_name = req.body.emp_name;
+                  req.employee.department = req.body.department;
+                  req.employee.salary = req.body.salary;
+                  req.employee.is_active = req.body.is_active;
+                  req.employee.save(function (err) {
+                      if (err)
+                          res.status(500).send(err);
+                      else {
+                          res.json(req.employee);
+                      }
+                  });
+              })
+              .patch(function (req, res) {
+                  console.log('/employees/:emp_id patch API request params:');
+                  console.log(req.params);
+      
+                  //remove _id from the patch logic
+                  if (req.body._id)
+                      delete req.body._id;
+      
+                  //genric patch logic for all the other keys except _id
+                  for (p in req.body) {
+                      req.employee[p] = req.body[p];
+                  }
+      
+                  req.employee.save(function (err) {
+                      if (err)
+                          res.status(500).send(err);
+                      else {
+                          res.json(req.employee);
+                      }
+                  });
+              })
+              .delete(function (req, res) {
+                  req.employee.remove(function (err) {
+                      if (err)
+                          res.status(500).send(err);
+                      else {
+                          res.status(204).send('Removed');
+                      }
+                  });
+              });
+          return empRouter;
+      };
+      
+      module.exports = routes;
+    </xmp>
+       </pre>
+
+      <p>
+        <br/>
+        <b>
+          Now since we have defined the API's, run the code using the command "gulp" on the root directory. It will start the app on
+          the port 8000.
+        </b>
+      </p>
+
+      <p>
+        <img class="img-responsive" src="./images/mean_gulp.png"></img>
+      </p>
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_api_running.png"></img>
+      </p>
+
+
+      <p>
+        <b>
+          Now since the API's are running on port 8000. We can try accessing all the API's. The mongodb server should be running. The
+          model will be created automatically.
+        </b>
+      </p>
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_post_api.png"></img>
+      </p>
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_get_api.png"></img>
+      </p>
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_put_api.png"></img>
+      </p>
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_patch_api.png"></img>
+      </p>
+
+
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_delete_api.png"></img>
+      </p>
+
+
+      <p>
+        <b>
+          Below is the model for mongoDB using the Compass app.
+        </b>
+      </p>
+      <p>
+        <br/>
+        <img class="img-responsive" src="./images/mean_mongo.png"></img>
+      </p>
+
+      <p>
+
+        For demo of the application with complete explanantion, visit my github repo :
+        <br/>
+        <br/>
+        <b>
+          <a href="https://github.com/sushantgadi/rest-node-express-mongodb" target="_blank">https://github.com/sushantgadi/rest-node-express-mongodb</a>
+        </b>
+      </p>
+
+
+      <p>
+        <br/> Read Next Blog -
+        <a ng-href="#!/spring-cloud" ng-click="srollup()">Micro Service Architecture Using Spring Cloud</a>
+      </p>
+      <div class="fb-comments" data-href="http://sushantgadi.in/#!/restful-services-using-node-mongo-express" data-numposts="5"></div>
 </div>
