@@ -27,6 +27,16 @@ angular
         controller: 'HomeCtrl',
         controllerAs: 'home'
       })
+      .when('/functional-reactive-programming', {
+        templateUrl: 'views/functional-reactive-programming.html',
+        controller: 'FunctionalReactiveProgrammingCtrl',
+        controllerAs: 'functionalRactiveProgrammingCtrl'
+      })
+      .when('/spring-5-reactive-programming-in-action', {
+        templateUrl: 'views/spring-5-reactive-programming-in-action.html',
+        controller: 'Spring5ReactiveProgrammingInActionCtrl',
+        controllerAs: 'spring5ReactiveProgrammingInActionCtrl'
+      })
       .when('/restful-services-using-node-mongo-express', {
         templateUrl: 'views/restful-services-using-node-mongo-express.html',
         controller: 'RestfulServicesUsingNodeMongoExpressCtrl',

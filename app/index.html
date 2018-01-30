@@ -5,6 +5,7 @@
     <meta charset="iso-8859-1">
     <title>Sushant's Programming Secrets</title>
     <link rel="icon" href="./images/site-icon.ico" />
+	<link rel="canonical" href="http://www.sushantgadi.in">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -28,11 +29,11 @@
     <!--Google adds-->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-6615526942924698",
-    enable_page_level_ads: true
-  });
-</script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-6615526942924698",
+        enable_page_level_ads: true
+      });
+    </script>
 
   </head>
   <body ng-app="sushantkumargadiApp">
@@ -72,7 +73,9 @@
                   <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blogs <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                      <li><a ng-href="#!/spring-5-reactive-programming-in-action">Spring 5 Reactive Programming In Action</a></li>
                       <!-- <li><a ng-href="#!/angular2">Kick Start Angular 2.0</a></li> -->
+                      <!-- <li><a ng-href="#!/functional-reactive-programming">Functional Reactive Programming</a></li> -->
                       <li><a ng-href="#!/restful-services-using-node-mongo-express">RESTful Services Using NodeJS, Mongodb & Express Server</a></li>
                       <li><a ng-href="#!/spring-cloud">Spring Cloud</a></li>
                       <li><a ng-href="#!/swagger">Swagger Rest API Documentation</a></li>
@@ -95,8 +98,10 @@
 <div class="container" ng-controller="MainCtrl">
   <!-- <div fb-like class="pull-right"></div> -->
   <!-- <div class="fb-like" data-href="http://sushantgadi.in" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div> -->
+  <div class="fb-wrapper">
   <div class="fb-like" data-href="https://www.facebook.com/sushantgadi.in/" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-  <div google-plus class="pull-right"></div>
+  </div>
+  <!-- <div google-plus class="pull-right"></div> -->
   <div ng-view=""></div>
 </div>
 
@@ -137,6 +142,8 @@ ga('send', 'pageview');
 <script src="scripts/app.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/spring-5-reactive-programming-in-action.js"></script>
+<script src="scripts/controllers/functional-reactive-programming.js"></script>
 <script src="scripts/controllers/spring-cloud.js"></script>
 <script src="scripts/controllers/restful-services-using-node-mongo-express.js"></script>
 <script src="scripts/controllers/angular2.js"></script>

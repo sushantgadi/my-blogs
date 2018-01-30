@@ -1,0 +1,439 @@
+<div class="row marketing">
+    Share this blog :
+    <div class="fb-share-button" data-href="http://sushantgadi.in/#!/spring-5-reactive-programming-in-action" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fsushantgadi.in%2F%23%21%2Fspring-5-reactive-programming-in-action&amp;src=sdkpreparse">Share</a></div>
+    <h1>
+        <b>Spring 5 Reactive Programming In Action</b>
+    </h1>
+    <br/>
+    <p>
+        In this post I will create a sample application, which will cover the core concepts of Spring 5.0, such as "functional reactive
+        programming".
+    </p>
+    <h2>
+        <b>What is Functional Reactive Programming or FRP?</b>
+    </h2>
+    <p>
+        You might have heard of this term
+        <strong>“functional reactive programming” or FRP</strong> quiet often these days, but you may wonder what it exactly is.
+    </p>
+    <p>
+        I have gone through number of definition for reactive programming.Let me give you the crux of FRP in few words:
+    </p>
+    <p>
+        <strong> “Functional Reactive Programming is a programming technique with asynchronous data streams”</strong>
+    </p>
+    <p>
+        Let’s relate the above definition with the real world to make it simpler:
+    </p>
+    <p>
+        Gone are the days when web pages were meant to perform simple UI rendering task and submitting the long tedious forms to
+        the backend. These days the webapps and mobile apps are quiet real time, for eg. You can see lot of action happening
+        on the screen when scrolling the page, may be its data loading event or triggering some other events on the screen.
+    </p>
+    <p>
+        In order to make the apps real time we need a programming technique, there comes the functional reactive programming into
+        picture.
+    </p>
+    <p>
+        Some important features of reactive programming.
+        <ul>
+            <li>Reactive programming is a declarative way to build applications.</li>
+            <li>Reactive Programming manages asynchronous data flows between producers of data and consumers that need to react
+                to that data in a non-blocking manner. So, Reactive Programming is all about non-blocking applications that
+                are asynchronous and event-driven and require a small number of threads to scale.</li>
+            <li>In a Reactive Programming context, "Everything is a Stream and acts in a non-blocking manner when there is data
+                in the stream."</li>
+            <li>The high level of abstraction with Reactive Programming leads to an increased readability of code so developers
+                can focus primarily on the interdependence of events that define the business logic.</li>
+            <li>With the feature to enforce backpressure, the Reactive approach is the best fit to control the flow of traffic
+                between producer and consumer, and this will help in avoiding out-of-memory problems.</li>
+            <li>With one or fewer threads, IO bound tasks can be performed in an asynchronous and non-blocking fashion without
+                blocking the current thread.</li>
+            <li>Reactive Programming can manage situations more efficiently where highly interactive and real-time applications,
+                or any action/event, may trigger a notification for multiple connected subsystems.</li>
+        </ul>
+    </p>
+    <h2>
+        <b>Reactive Streams</b>
+    </h2>
+    <p>
+        "Reactive Streams" defines an API specification that contains a minimal set of interfaces that expose ways to define operations
+        and entities for asynchronous streams of data with non-blocking backpressure.
+    </p>
+    <p>
+        With the introduction of backpressure, Reactive Streams allows the subscriber to control the data exchange rate from publishers.
+    </p>
+    <p>
+        The Reactive Streams API is officially part of Java 9 as java.util.concurrent.Flow.
+    </p>
+    <p>
+        Mono and Flux are implementations of the Publisher interface. A Flux will observe 0 to N items and eventually terminate successfully
+        or not. A Mono will observe 0 or 1 item, with Mono &lt;Void&gt; hinting at most 0 items.
+    </p>
+    <h2>
+        <b>Traditional Spring 4.x traditional Vs. Spring 5.x Reactive programming</b>
+    </h2>
+    <p>
+        In
+        <strong>Spring 4.x</strong> way of implementation, execution will be blocked and will wait until the completion of your service
+        execution. In the following code, after the first print statement, program execution will be blocked and waiting
+        for service execution to complete. After the completion of service execution, the program execution will be resumed
+        and the second print statement will be executed.
+    </p>
+    <pre>
+        <xmp>
+        @GetMapping("/employee")
+        public List <Employee> all() {
+        System.out.println("Spring 4.x service call started....");
+        List <Employee> employees = empService.all();
+        System.out.println("Spring 4.x service call completed....");
+        return employees;
+        }         
+        </xmp>
+    </pre>
+    <p>
+        In
+        <strong>Spring 5.x Reactive</strong> way of implmentation, program execution will continue without waiting for the completion
+        of service execution. In the following code, after the first print statement, the second print statement will be
+        executed in a non-blocking manner without waiting for the completion of service execution. The Flux stream will be
+        populated with the availability of product data.
+    </p>
+    <pre>
+        <xmp>
+        @GetMapping(value = "/employee", .TEXT_EVENT_STREAM_VALUE)
+        public Flux <Employee> all() {
+        System.out.println("Spring 5.x service reactive using flux call started....");
+        Flux <Employee> fluxEmployees = prodService.getProductsStream("Flux");
+        System.out.println("Spring 5.x service reactive using flux call completed....");
+        return fluxEmployees;
+        }       
+        </xmp>
+        </pre>
+    <img class="img-responsive" src="./images/spring-5-reactive-1.png"></img>
+    <h2>
+        <b>Reactive Web Client</b>
+    </h2>
+    <p>
+        Spring 5 introduced the Reactive WebClient in addition to the existing RestTemplate.
+    </p>
+    <p>
+        The ClientHttpRequest and ClientHttpResponse abstractions expose the request and response body as Flux
+        <DataBuffer>
+            with full backpressure support on the read and the write side.
+    </p>
+    <p>
+        The Encoder and Decoder abstractions from Spring Core are also used on the client side for the serialization of a Flux of
+        bytes to and from typed objects.
+    </p>
+    <p>
+        Below is a sample of a Reactive WebClient that calls the endpoint and receives and handles the Reactive Stream Flux object.
+    </p>
+    <pre>
+    <xmp>
+    @GetMapping("/accounts/{id}/alerts")
+    public Flux <Alert> getAccountAlerts(@PathVariable Long id) {
+    WebClient webClient = new WebClient(new ReactorClientHttpConnector());
+    return this.repository.getAccount(id)
+    .flatMap(account -> webClient.perform(get("/alerts/{key}", account.getKey()))
+    .extract(bodyStream(Alert.class)));
+    }    
+   </xmp>
+   </pre>
+    <h2>
+        <b>Shortcomings of Spring 5</b>
+    </h2>
+    <ul>
+        <li>Troubleshooting a Reactive application is a bit difficult, and there is the possibility that, while fixing an issue,
+            you might accidentally block code has been introduced.</li>
+        <li>Most of the traditional Java-based integration libraries are still blocking.</li>
+        <li>Limited options are available for Reactive data stores, except for a few NoSQL databases such as MongoDB.</li>
+        <li>Spring Security is still not supported.</li>
+    </ul>
+    <h2>
+        <b>Implementation</b>
+    </h2>
+    <p>
+        Since we have some basics now. Let’s get started with the spring mvc rest application.
+    </p>
+    <p>
+        The stack we are using to create an Employee application:
+    </p>
+    <ul>
+        <li>Java 8</li>
+        <li>Spring 5</li>
+        <li>Spring Boot 2 for
+            <a href="http://sushantgadi.in/#!/spring-cloud" target="_blank">microservice architecture</a>
+        </li>
+        <li>Spring Webflux</li>
+        <li>Spring Reactive Data MongoDb</li>
+        <li>Spring Security Reactive Webflux</li>
+        <li>Gradle as build tool</li>
+        <li>Mongodb for data persistence</li>
+    </ul>
+    <p>
+        <strong>build.gradle</strong> file of the application containing the required dependencies :</p>
+    <pre>
+     <xmp>
+            buildscript {
+                ext {
+                    springBootVersion = '2.0.0.M2'
+                }
+                repositories {
+                    mavenCentral()
+                    maven { url "https://repo.spring.io/snapshot" }
+                    maven { url "https://repo.spring.io/milestone" }
+                }
+                dependencies {
+                    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+                }
+            }
+            
+            apply plugin: 'java'
+            apply plugin: 'eclipse'
+            apply plugin: 'idea'
+            apply plugin: 'org.springframework.boot'
+            apply plugin: 'io.spring.dependency-management'
+            
+            version = '0.0.1-SNAPSHOT'
+            sourceCompatibility = 1.8
+            
+            repositories {
+                mavenCentral()
+                maven { url "https://repo.spring.io/snapshot" }
+                maven { url "https://repo.spring.io/milestone" }
+            }
+            
+            
+            dependencies {
+                compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+                compile('org.springframework.boot:spring-boot-starter-webflux')
+                compile('org.springframework.security:spring-security-core')
+                compile('org.springframework.security:spring-security-config')
+                compile('org.springframework.security:spring-security-webflux')
+                compileOnly('org.projectlombok:lombok')
+                testCompile('org.springframework.boot:spring-boot-starter-test')
+                testCompile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
+                testCompile('io.projectreactor:reactor-test')
+            }
+            
+    </xmp>   
+    </pre>
+    <br/>
+    <p>
+        <strong>Application.java</strong> with required annotations :</p>
+    <pre>
+    <xmp> 
+    package com.spring.poc;
+            
+    import org.springframework.boot.SpringApplication;
+    import org.springframework.boot.autoconfigure.SpringBootApplication;
+    import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+    import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+            
+    @SpringBootApplication
+    @EnableReactiveMongoRepositories
+    @EnableWebFluxSecurity
+    public class Application {
+            
+    public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+       }
+    }    
+    </xmp>       
+    </pre>
+    <br/>
+    <p>controller -
+        <strong>EmployeeController.java</strong> :</p>
+    <pre>
+    <xmp> 
+            package com.spring.poc.controllers;
+            
+            import com.spring.poc.models.Employee;
+            import com.spring.poc.repositories.EmployeeRespository;
+            
+            import org.springframework.beans.factory.annotation.Autowired;
+            import org.springframework.web.bind.annotation.GetMapping;
+            import org.springframework.web.bind.annotation.RequestMapping;
+            import org.springframework.web.bind.annotation.RestController;
+            import reactor.core.publisher.Flux;
+            
+            @RestController
+            @RequestMapping("/employee")
+            public class EmployeeController {
+            
+                @Autowired
+                private EmployeeRespository personRespository;
+            
+                @GetMapping
+                public Flux<Employee> index() {
+                    return personRespository.findAll();
+                }
+            }
+             
+    </xmp>       
+    </pre>
+
+    <br/>
+    <p>route configuration -
+        <strong>RoutesConfiguration.java</strong> :</p>
+    <pre>
+    <xmp> 
+            package com.spring.poc.controllers;
+            
+            import com.spring.poc.models.Employee;
+            import com.spring.poc.repositories.EmployeeRespository;
+            
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.Configuration;
+            import org.springframework.http.HttpMethod;
+            import org.springframework.web.reactive.function.server.RequestPredicates;
+            import org.springframework.web.reactive.function.server.RouterFunction;
+            
+            import static org.springframework.web.reactive.function.server.RequestPredicates.method;
+            import static org.springframework.web.reactive.function.server.RequestPredicates.path;
+            import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
+            import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+            import static org.springframework.web.reactive.function.server.ServerResponse.ok;
+            
+            @Configuration
+            public class RoutesConfiguration {
+        
+                @Bean
+                RouterFunction<?> routes(EmployeeRespository personRespository) {
+                    return nest(path("/employee"),
+            
+                      route(RequestPredicates.GET("/{id}"),
+                        request -> ok().body(personRespository.findById(request.pathVariable("id")), Employee.class))
+            
+                        .andRoute(method(HttpMethod.POST),
+                          request -> {
+                            personRespository.insert(request.bodyToMono(Employee.class)).subscribe();
+                        return ok().build();
+                    })
+                    );
+                }
+            }                   
+    </xmp>       
+    </pre>
+
+    <br/>
+    <p>Employee model class -
+        <strong>Employee.java</strong> :</p>
+    <pre>
+    <xmp> 
+            package com.spring.poc.models;
+            
+            import lombok.AllArgsConstructor;
+            import lombok.Data;
+            import lombok.NoArgsConstructor;
+            import lombok.ToString;
+            import org.springframework.data.annotation.Id;
+            import org.springframework.data.mongodb.core.mapping.Document;
+            
+            @Document
+            @Data
+            @AllArgsConstructor
+            @NoArgsConstructor
+            @ToString
+            public class Employee {
+                private String name;
+                private int age;
+                private String designation;
+                @Id private String id;
+            }
+                    
+    </xmp>       
+    </pre>
+
+
+    <br/>
+    <p>Employee reactive mongo repository -
+        <strong>EmployeeRepository.java</strong> :</p>
+    <pre>
+    <xmp> 
+            package com.spring.poc.repositories;
+            
+            import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+            
+            import com.spring.poc.models.Employee;
+            
+            public interface EmployeeRespository extends ReactiveMongoRepository
+             <Employee, String> {
+           }
+    </xmp>       
+    </pre>
+
+    <br/>
+    <p>basic security configuration -
+        <strong>SecurityConfiguration.java</strong> :</p>
+    <pre>
+    <xmp> 
+            package com.spring.poc.security;
+            
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.Configuration;
+            import org.springframework.security.core.userdetails.MapUserDetailsRepository;
+            import org.springframework.security.core.userdetails.UserDetails;
+            import org.springframework.security.core.userdetails.UserDetailsRepository;
+            
+            import static org.springframework.security.core.userdetails.User.withUsername;
+            
+            @Configuration
+            public class SecurityConfiguration {
+            
+                @Bean
+                UserDetailsRepository userDetailsRepository() {
+                    UserDetails user = withUsername("user").password("user@123").roles("USER").build();
+                    UserDetails admin = withUsername("admin").password("admin@123").roles("USER", "ADMIN").build();
+                    return new MapUserDetailsRepository(user, admin);
+                }
+            }
+                          
+    </xmp>       
+    </pre>
+    <br/>
+    <p>application properties -
+        <strong>Applicaion.properties</strong> :</p>
+    <pre>
+    <xmp> 
+    spring.data.mongodb.database=employee        
+    </xmp>       
+    </pre>
+
+    <p>That’s all, let’s start the application using
+        <strong>gradlew bootRun</strong>
+    </p>
+
+    <p>Below are the endpoints :</p>
+    <br/>
+    <strong>1- Save Employee :</strong>
+    <img class="img-responsive" src="./images/spring-5-reactive-2.png"></img>
+    <br>
+    <br/>
+    <strong>2- Get all Employees :</strong>
+    <img class="img-responsive" src="./images/spring-5-reactive-3.png"></img>
+    <br>
+    <br/>
+    <strong>2- Get Employee By Id :</strong>
+    <img class="img-responsive" src="./images/spring-5-reactive-4.png"></img>
+    <br>
+    <br/>
+    <strong>2- Mongodb schema using Compass app :</strong>
+    <img class="img-responsive" src="./images/spring-5-reactive-5.png"></img>
+    <br>
+    <p>
+
+    For demo of the application with complete explanantion, visit my github repo :
+        <br/>
+        <br/>
+        <b>
+            <a href="https://github.com/sushantgadi/spring-5-reactive-programming" target="_blank">
+                https://github.com/sushantgadi/spring-5-reactive-programming
+            </a>
+        </b>
+    </p>
+    <p>Read Next Blog -
+        <a ng-href="#!/restful-services-using-node-mongo-express" ng-click="srollup()">RESTful Web Services Using Nodejs, Mongodb and Express Server</a>
+    </p>
+    <div class="fb-comments" data-href="http://sushantgadi.in/#!/spring-5-reactive-programming-in-action" data-numposts="5"></div>
+</div>
