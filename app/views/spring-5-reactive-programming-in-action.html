@@ -1,6 +1,9 @@
 <div class="row marketing">
     Share this blog :
-    <div class="fb-share-button" data-href="http://sushantgadi.in/#!/spring-5-reactive-programming-in-action" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fsushantgadi.in%2F%23%21%2Fspring-5-reactive-programming-in-action&amp;src=sdkpreparse">Share</a></div>
+    <div class="fb-share-button" data-href="http://sushantgadi.in/#!/spring-5-reactive-programming-in-action" data-layout="button_count"
+        data-size="small" data-mobile-iframe="true">
+        <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fsushantgadi.in%2F%23%21%2Fspring-5-reactive-programming-in-action&amp;src=sdkpreparse">Share</a>
+    </div>
     <h1>
         <b>Spring 5 Reactive Programming In Action</b>
     </h1>
@@ -299,7 +302,7 @@
             public class RoutesConfiguration {
         
                 @Bean
-                RouterFunction<?> routes(EmployeeRespository personRespository) {
+                RouterFunction?> routes(EmployeeRespository personRespository) {
                     return nest(path("/employee"),
             
                       route(RequestPredicates.GET("/{id}"),
@@ -357,9 +360,12 @@
             
             import com.spring.poc.models.Employee;
             
-            public interface EmployeeRespository extends ReactiveMongoRepository
-             <Employee, String> {
-           }
+            import reactor.core.publisher.Flux;
+            
+            public interface EmployeeRespository extends ReactiveMongoRepository<Employee, String> {
+                Flux<Employee> findByEmpName(String name);
+            }
+            
     </xmp>       
     </pre>
 
@@ -387,8 +393,7 @@
                     UserDetails admin = withUsername("admin").password("admin@123").roles("USER", "ADMIN").build();
                     return new MapUserDetailsRepository(user, admin);
                 }
-            }
-                          
+            }                         
     </xmp>       
     </pre>
     <br/>
@@ -414,16 +419,16 @@
     <img class="img-responsive" src="./images/spring-5-reactive-3.png"></img>
     <br>
     <br/>
-    <strong>2- Get Employee By Id :</strong>
+    <strong>3- Get Employee By Id :</strong>
     <img class="img-responsive" src="./images/spring-5-reactive-4.png"></img>
     <br>
     <br/>
-    <strong>2- Mongodb schema using Compass app :</strong>
+    <strong>Mongodb schema using Compass app :</strong>
     <img class="img-responsive" src="./images/spring-5-reactive-5.png"></img>
     <br>
     <p>
 
-    For demo of the application with complete explanantion, visit my github repo :
+        For demo of the application with complete explanantion, visit my github repo :
         <br/>
         <br/>
         <b>
